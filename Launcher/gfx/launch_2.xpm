@@ -1,5 +1,5 @@
 /* XPM */
-static char * launch_2[] = {
+static const char * launch_2[] = {
 "418 130 62 1",
 " 	c #DDFED6",
 ".	c #DDFED7",

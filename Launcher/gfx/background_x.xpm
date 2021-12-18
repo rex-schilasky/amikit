@@ -1,5 +1,5 @@
 /* XPM */
-static char * background_x[] = {
+static const char * background_x[] = {
 "444 471 242 2",
 "  	c #688A61",
 ". 	c #688A62",

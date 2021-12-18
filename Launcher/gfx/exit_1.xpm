@@ -1,5 +1,5 @@
 /* XPM */
-static char * exit_1[] = {
+static const char * exit_1[] = {
 "199 85 53 1",
 " 	c #93AB8E",
 ".	c #92AA8D",

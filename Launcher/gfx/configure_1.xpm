@@ -1,5 +1,5 @@
 /* XPM */
-static char * configure_1[] = {
+static const char * configure_1[] = {
 "199 85 137 2",
 "  	c #95AD91",
 ". 	c #95AC90",

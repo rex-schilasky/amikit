@@ -1,5 +1,5 @@
 /* XPM */
-static char * launch_1[] = {
+static const char * launch_1[] = {
 "418 130 184 2",
 "  	c #98AF93",
 ". 	c #98AF94",

@@ -1,5 +1,5 @@
 /* XPM */
-static char * about_1[] = {
+static const char * about_1[] = {
 "199 85 38 1",
 " 	c #8FA68A",
 ".	c #8FA58A",

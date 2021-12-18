@@ -753,14 +753,14 @@ bool AkPanel::LoadButton(int pos, wxString name)
 
 wxMenu* AkPanel::CreateThemesMenu()
 {
-  wxMenu *menu = new wxMenu;
-
   wxFileName fpath(base_dir + "\\" + theme);
   wxString themedir = fpath.GetPath();
   
   wxDir dir1(themedir);
   wxDir dir2(themedir);
-  if(!dir1.IsOpened()) return(false);
+  if(!dir1.IsOpened()) return(nullptr);
+
+  wxMenu* menu = new wxMenu;
 
   wxString subdir;
   int      ndir = 0;

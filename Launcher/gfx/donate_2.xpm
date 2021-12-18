@@ -1,5 +1,5 @@
 /* XPM */
-static char * donate_2[] = {
+static const char * donate_2[] = {
 "199 85 117 2",
 "  	c #DAFED3",
 ". 	c #D9FDD2",

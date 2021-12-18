@@ -38,7 +38,7 @@ public:
   void Stop() { m_sleep = false; m_stop = true; };
 
 protected:
-  bool RomSearch(wxString& startdir);
+  bool RomSearch(const wxString& startdir);
 
   wxString m_startdir;
   wxString m_dlldir;

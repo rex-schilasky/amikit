@@ -189,7 +189,7 @@ void *RFThread::Entry()
   return NULL;
 }
 
-bool RFThread::RomSearch(wxString& startdir)
+bool RFThread::RomSearch(const wxString& startdir)
 {
   if(TestDestroy())            return(false);
   if(!wxDir::Exists(startdir)) return(false);

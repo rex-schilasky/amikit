@@ -1,5 +1,5 @@
 /* XPM */
-static char *Icon[] = {
+static const char *Icon[] = {
 /* columns rows colors chars-per-pixel */
 "32 32 9 1",
 "  c None",

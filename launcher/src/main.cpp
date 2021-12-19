@@ -15,9 +15,9 @@
 
 #include "wx/msw/registry.h"
 
-#include "flowerpot.h"
+#include "main.h"
 
-#include "../gfx/icon.xpm"
+#include "../gfx/icon_amikit.xpm"
 
 #include "../gfx/background.xpm"
 #include "../gfx/background_x.xpm"

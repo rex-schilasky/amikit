@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="work_debug\romfind.ini" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\rfind.rc">

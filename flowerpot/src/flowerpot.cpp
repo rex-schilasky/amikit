@@ -132,18 +132,7 @@ wxString GetShellOpen(wxString file)
 
 void ShowURL(wxString url)
 {
-  wxString command = GetShellOpen(".htm");
-  int index = command.Find("%1");
-  if(index > 0)
-  {
-    command.Replace("%1", url);
-    ::wxExecute(command);
-  }
-  else
-  {
-    command = command + " " + url;
-    ::wxExecute(command);
-  }
+  wxLaunchDefaultBrowser(url);
 }
    
 // ============================================================================

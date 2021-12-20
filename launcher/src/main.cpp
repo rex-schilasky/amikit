@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////
 //
-// FLOWERPOT.CPP            Rex Schilasky
+// MAIN.CPP            Rex Schilasky
 //
 /////////////////////////////////////////////////////////////////////////
 
@@ -16,8 +16,7 @@
 #include "wx/msw/registry.h"
 
 #include "main.h"
-
-#include "../gfx/icon_amikit.xpm"
+#include "appnames.h"
 
 #include "../gfx/background.xpm"
 #include "../gfx/background_x.xpm"
@@ -39,7 +38,6 @@
 // Defines
 // ============================================================================
 
-#define AppTitle        "FlowerPot"
 #define VerString       "version 10.0"
 #define MaxThemes         32
 #define MaxButtons         5
@@ -64,22 +62,22 @@ enum
 // ============================================================================
 // Globals
 // ============================================================================
-wxFileConfig* pFConf       = nullptr;
-wxLogStderr*  pLog         = nullptr;
-wxString      base_dir     = "";
-wxString      runflowerpot = "";
-wxString      configwinuae = "";
-wxString      winuae_dir   = "";
-wxString      winuae_exe   = "";
-wxString      winuae_ver   = "";
-wxString      winuae_check = "no";
-wxString      theme        = "theme\\default";
-wxString      website      = "";
-wxString      manual       = "";
-wxString      rundonate    = "";
-wxString      contact      = "";
-wxString      afonlinefile = "";
-wxString      winpath      = "";
+wxFileConfig* pFConf         = nullptr;
+wxLogStderr*  pLog           = nullptr;
+wxString      base_dir       = "";
+wxString      runapplication = "";
+wxString      configwinuae   = "";
+wxString      winuae_dir     = "";
+wxString      winuae_exe     = "";
+wxString      winuae_ver     = "";
+wxString      winuae_check   = "no";
+wxString      theme          = "theme\\default";
+wxString      website        = "";
+wxString      manual         = "";
+wxString      rundonate      = "";
+wxString      contact        = "";
+wxString      afonlinefile   = "";
+wxString      winpath        = "";
 wxArrayString forbsysnames;
 wxBitmap      bgbitmap;
 wxString      themes[MaxThemes];
@@ -172,25 +170,25 @@ bool AkApp::OnInit(void)
   }
 
   // Read configuration
-  wxFileName fn2(base_dir + "/" + "flowerpot.ini");
-  pFConf = new wxFileConfig("FlowerPot", AppTitle, fn2.GetFullPath());
-  pFConf->Read("RunFlowerPot",  &runflowerpot);
-  pFConf->Read("ConfigWinUAE",  &configwinuae);
-  pFConf->Read("WinUAEDir",     &winuae_dir);
-  pFConf->Read("WinUAEVer",     &winuae_ver);
-  pFConf->Read("WinUAECheck",   &winuae_check);
+  wxFileName fn2(base_dir + "/" + app_name_ini);
+  pFConf = new wxFileConfig(app_name_cc, app_name_cc, fn2.GetFullPath());
+  pFConf->Read("RunApplication",  &runapplication);
+  pFConf->Read("ConfigWinUAE",    &configwinuae);
+  pFConf->Read("WinUAEDir",       &winuae_dir);
+  pFConf->Read("WinUAEVer",       &winuae_ver);
+  pFConf->Read("WinUAECheck",     &winuae_check);
   wxString tmp_theme;
-  pFConf->Read("Theme",         &tmp_theme);
+  pFConf->Read("Theme",           &tmp_theme);
   if (!tmp_theme.empty() && wxFileExists(base_dir + "/" + tmp_theme + "/" + "background.png"))
   {
     theme = tmp_theme;
   }
-  pFConf->Read("WebSite",       &website);
-  pFConf->Read("Manual",        &manual);
-  pFConf->Read("RunDonate",     &rundonate);
-  pFConf->Read("Contact",       &contact);
-  pFConf->Read("AFOnlineFile",  &afonlinefile);
-  pFConf->Read("WinPath",       &winpath);
+  pFConf->Read("WebSite",         &website);
+  pFConf->Read("Manual",          &manual);
+  pFConf->Read("RunDonate",       &rundonate);
+  pFConf->Read("Contact",         &contact);
+  pFConf->Read("AFOnlineFile",    &afonlinefile);
+  pFConf->Read("WinPath",         &winpath);
   
   // Create list of forbidden sys names
   wxString forbsysnames_str = "";
@@ -204,7 +202,7 @@ bool AkApp::OnInit(void)
   }
 
   // Open log file
-  FILE* logfp = fopen((base_dir + "\\" + "flowerpot.log").c_str(), "wt");
+  FILE* logfp = fopen((base_dir + "\\" + app_name_log).c_str(), "wt");
   if(logfp)
   {
     pLog = new wxLogStderr(logfp);
@@ -275,9 +273,9 @@ bool AkApp::OnInit(void)
     }
     if(forbsysnames.Index(drive) != wxNOT_FOUND)
     {
-      wxString msg  = "The name of your Windows harddisk might be in conflict with FlowerPot.\nPlease rename your harddisk partition before you run FlowerPot.";
+      wxString msg  = "The name of your Windows harddisk might be in conflict with this application.\nPlease rename your harddisk partition before you run this application.";
       wxString name = "\n\nCurrent name is    \"" + drive + "\"";
-      wxMessageDialog dlg(NULL, msg + name, "FlowerPot Error", wxOK);
+      wxMessageDialog dlg(NULL, msg + name, "Application Error", wxOK);
       dlg.ShowModal();
       return(false);
     }
@@ -323,7 +321,7 @@ bool AkApp::OnInit(void)
   }
 
 
-  // WinUAE FlowerPot inside executable
+  // WinUAE directory inside executable
   wxString winuae_exe_local = winuae_dir + "/winuae.exe";
   wxString winuae_exe_inst  = "";
 
@@ -385,13 +383,13 @@ bool AkApp::OnInit(void)
   if(!silent_mode)
   {
     // Create the main frame window
-    AkFrame *frame = new AkFrame(NULL, wxID_ANY, _T(AppTitle), wxPoint(0,0), wxSize(460,516));
+    AkFrame *frame = new AkFrame(NULL, wxID_ANY, _T(app_name_cc), wxPoint(0,0), wxSize(460,516));
 
     // Make a panel
     frame->CenterOnScreen();
     frame->Show(true);
 
-    frame->SetIcon(wxIcon(icon));
+    frame->SetIcon(wxIcon(app_icon));
 
     // Return the main frame window
     SetTopWindow(frame);
@@ -565,7 +563,7 @@ void AkPanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 
 void ShowTitleText(wxFrame* frame, wxString text, int sleep)
 {
-  wxString Title = wxString(AppTitle);
+  wxString Title = wxString(app_name_cc);
   size_t tlen = text.Len();
   size_t slen = 45 - tlen/2;
   wxString Space = "";
@@ -599,7 +597,7 @@ void AkPanel::OnLeftUp(wxMouseEvent& event)
   }
 #endif
   
-  // the flowerpot sign
+  // the application sign
   if((pos.x > 30) && (pos.x < 510) && (pos.y > 20) && (pos.y < 100))
   {
     ShowURL(website);
@@ -620,7 +618,7 @@ void AkPanel::OnContextMenu(wxContextMenuEvent& event)
   ShowContextMenu(point);
 }
 
-// Run FlowerPot
+// Run application
 void AkPanel::OnButtonAK(wxCommandEvent& WXUNUSED(event))
 {
   if(::wxExecute(GetRunCommand()) > 0)
@@ -666,8 +664,8 @@ void AkPanel::OnButtonExit(wxCommandEvent& WXUNUSED(event))
 
 void AkPanel::OnMenuAbout(wxCommandEvent& event)
 {
-  (void)wxMessageBox(_T("-------------------------------------------    \n  Coding: Rex Schilasky\n\n  Artwork: Kenneth E. Lester, Jr.\n-------------------------------------------    "),
-                     _T("flowerpot launcher ") + wxString("(") + VerString + ")",
+  (void)wxMessageBox(_T("Author: Rex Schilasky\nArtwork: Kenneth E. Lester, Jr.\n"),
+                     _T(app_name_launcher) + wxString("(") + VerString + ")",
                      wxICON_INFORMATION);
 }
 
@@ -723,7 +721,7 @@ bool AkPanel::LoadButton(int pos, wxString name)
   bool ret_state = false;
   for(int bstate = 0; bstate < 2; bstate++)
   {
-    // Button 1 (run_flowerpot)
+    // Button 1 (run_application)
     wxBitmap bitmap;
     wxFileName fpath(base_dir + "\\" + theme + "\\" + name + wxString::Format("_%d", bstate+1) + ".png");
     if(fpath.FileExists())
@@ -793,7 +791,7 @@ wxString AkPanel::GetRunCommand()
   wxString command = winuae_exe;
   wxFileName file_name(base_dir + "/" + winuae_dir);
   wxString dir = file_name.GetFullPath();
-  command = command + " -datapath " + "\"" + dir + "\" " + runflowerpot;
+  command = command + " -datapath " + "\"" + dir + "\" " + runapplication;
   return(command);
 }
 

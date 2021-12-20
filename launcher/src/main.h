@@ -1,12 +1,10 @@
 /////////////////////////////////////////////////////////////////////////
 //
-// FLOWERPOT.H              Rex Schilasky
+// MAIN.H              Rex Schilasky
 //
 /////////////////////////////////////////////////////////////////////////
 
-#ifndef flowerpot_h_included
-#define flowerpot_h_included
-
+#pragma once
 
 // ============================================================================
 // AkApp
@@ -100,5 +98,3 @@ private:
   
   DECLARE_EVENT_TABLE()
 };
-
-#endif /* flowerpot_h_included */

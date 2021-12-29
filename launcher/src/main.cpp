@@ -38,7 +38,7 @@
 // Defines
 // ============================================================================
 
-#define VerString       "version 10.0"
+#define VerString       "version 11.5"
 #define MaxThemes         32
 #define MaxButtons         5
 

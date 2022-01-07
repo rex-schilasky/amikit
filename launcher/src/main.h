@@ -68,9 +68,8 @@ protected:
   bool LoadButton(int pos, wxString name);
   wxMenu* CreateThemesMenu();
   void ShowContextMenu(const wxPoint& pos);
-  wxString GetRunCommand();
-  wxString GetCfgCommand();
-  wxString GetDonateCommand();
+
+  wxString GetRunWinUAECommand();
 
   wxFrame          *m_frame;
   wxBoxSizer       *m_sizer1;

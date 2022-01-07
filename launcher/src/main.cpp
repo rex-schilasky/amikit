@@ -65,6 +65,7 @@ enum
 wxFileConfig* pFConf         = nullptr;
 wxLogStderr*  pLog           = nullptr;
 wxString      base_dir       = "";
+wxString      appname        = "";
 wxString      runapplication = "";
 wxString      configwinuae   = "";
 wxString      winuae_dir     = "";
@@ -74,7 +75,7 @@ wxString      winuae_check   = "no";
 wxString      theme          = "theme\\default";
 wxString      website        = "";
 wxString      manual         = "";
-wxString      rundonate      = "";
+wxString      donation       = "";
 wxString      contact        = "";
 wxString      afonlinefile   = "";
 wxString      winpath        = "";
@@ -172,6 +173,7 @@ bool AkApp::OnInit(void)
   // Read configuration
   wxFileName fn2(base_dir + "/" + app_name_ini);
   pFConf = new wxFileConfig(app_name_cc, app_name_cc, fn2.GetFullPath());
+  pFConf->Read("AppName",         &appname);
   pFConf->Read("RunApplication",  &runapplication);
   pFConf->Read("ConfigWinUAE",    &configwinuae);
   pFConf->Read("WinUAEDir",       &winuae_dir);
@@ -185,7 +187,7 @@ bool AkApp::OnInit(void)
   }
   pFConf->Read("WebSite",         &website);
   pFConf->Read("Manual",          &manual);
-  pFConf->Read("RunDonate",       &rundonate);
+  pFConf->Read("Donation",        &donation);
   pFConf->Read("Contact",         &contact);
   pFConf->Read("AFOnlineFile",    &afonlinefile);
   pFConf->Read("WinPath",         &winpath);
@@ -498,7 +500,7 @@ AkPanel::AkPanel(wxFrame *frame, int x, int y, int w, int h )
   m_Button[0] = new AkBitmapButton(this, ID_BUTTON_1, bitmap11, bitmap12);
   m_sizer2->Add(m_Button[0], 0, wxLEFT | wxRIGHT, Button_HSpace);
 #ifdef _DEBUG
-  m_Button[0]->SetToolTip(GetRunCommand());
+  m_Button[0]->SetToolTip(GetRunWinUAECommand() + runapplication);
 #endif
 
   // Button (about)
@@ -511,7 +513,7 @@ AkPanel::AkPanel(wxFrame *frame, int x, int y, int w, int h )
   wxBitmap bitmap32 = wxBitmap(configure_2);
   m_Button[2] = new AkBitmapButton(this, ID_BUTTON_3, bitmap31, bitmap32);
 #ifdef _DEBUG
-  m_Button[2]->SetToolTip(GetCfgCommand());
+  m_Button[2]->SetToolTip(GetRunWinUAECommand() + configwinuae);
 #endif
 
   // Button (donante)
@@ -618,23 +620,23 @@ void AkPanel::OnContextMenu(wxContextMenuEvent& event)
   ShowContextMenu(point);
 }
 
-// Run application
+// Run WinUAE Application (ini:RunApplication)
 void AkPanel::OnButtonAK(wxCommandEvent& WXUNUSED(event))
 {
-  if(::wxExecute(GetRunCommand()) > 0)
+  if(::wxExecute(GetRunWinUAECommand() + runapplication) > 0)
   {
     // Close launcher if successful
     ::wxExit();
   }
 }
 
-// Configure WinUAE
+// Configure WinUAE (ini:ConfigWinUAE)
 void AkPanel::OnButtonConfUAE(wxCommandEvent& WXUNUSED(event))
 {
-  wxExecute(GetCfgCommand());
+  wxExecute(GetRunWinUAECommand() + configwinuae);
 }
 
-// Read the Manual
+// Show Documentation (ini:Manual)
 void AkPanel::OnButtonDoc(wxCommandEvent& WXUNUSED(event))
 {
   wxFileName file_name(base_dir + "/" + manual);
@@ -643,17 +645,31 @@ void AkPanel::OnButtonDoc(wxCommandEvent& WXUNUSED(event))
   ShowURL(file);
 }
 
-// Make a Donation
+// Make a Donation (ini:Donation)
+// 
+// amikit: Open WebSite
+// 
+// WebSite  =  https://amikit.amiga.sk/
+// Donation =  RabbitHole/doc/getamigaos.html
+//
+// flowerpot: Run WinUAE Application
+// 
+// Donation =  -f "../WinUAE/Configurations/InstallOS4.uae" -s use_gui=no
+//
 void AkPanel::OnButtonDonate(wxCommandEvent& WXUNUSED(event))
 {
-#if 0
-  wxFileName file_name(base_dir + "/" + donation);
-  wxString file = file_name.GetFullPath();
-  wxLogMessage(wxString("OnButtonDonate: ") + "FileName = " +  file);
-  ShowURL(file);
-#else
-  wxExecute(GetDonateCommand());
-#endif
+  if (appname == "amikit")
+  {
+    wxFileName file_name(base_dir + "/" + donation);
+    wxString file = file_name.GetFullPath();
+    wxLogMessage(wxString("OnButtonDoc: ") + "FileName = " + file);
+    ShowURL(file);
+  }
+
+  if (appname == "flowerpot")
+  {
+    wxExecute(GetRunWinUAECommand() + donation);
+  }
 }
 
 // Exit
@@ -786,30 +802,12 @@ void AkPanel::ShowContextMenu(const wxPoint& pos)
   PopupMenu(&menu, pos.x, pos.y);
 }
 
-wxString AkPanel::GetRunCommand()
+wxString AkPanel::GetRunWinUAECommand()
 {
   wxString command = winuae_exe;
   wxFileName file_name(base_dir + "/" + winuae_dir);
   wxString dir = file_name.GetFullPath();
-  command = command + " -datapath " + "\"" + dir + "\" " + runapplication;
-  return(command);
-}
-
-wxString AkPanel::GetCfgCommand()
-{
-  wxString command = winuae_exe;
-  wxFileName file_name(base_dir + "/" + winuae_dir);
-  wxString dir = file_name.GetFullPath();
-  command = command + " -datapath " + "\"" + dir + "\" " + configwinuae;
-  return(command);
-}
-
-wxString AkPanel::GetDonateCommand()
-{
-  wxString command = winuae_exe;
-  wxFileName file_name(base_dir + "/" + winuae_dir);
-  wxString dir = file_name.GetFullPath();
-  command = command + " -datapath " + "\"" + dir + "\" " + rundonate;
+  command = command + " -datapath " + "\"" + dir + "\" ";
   return(command);
 }
 
